@@ -17,6 +17,9 @@ class AlienInvasion:
 
         self.ship=Ship(self)
         self.bullets=pygame.sprite.Group()
+        self.autofire=False
+        self.count=0
+        
 
 
     def _check_events(self):#响应键鼠
@@ -40,7 +43,8 @@ class AlienInvasion:
         elif event.key==pygame.K_q:     #按Q退出
             sys.exit()
         elif event.key==pygame.K_SPACE: #空格射击
-            self._fire_bullet()
+            self.autofire=True
+            #self._fire_bullet()
     
     def _key_up_events(self,event):
         if event.key==pygame.K_RIGHT:
@@ -51,21 +55,39 @@ class AlienInvasion:
             self.ship.ship_move_up=False
         elif event.key==pygame.K_DOWN:
             self.ship.ship_move_down=False
+        elif event.key==pygame.K_SPACE:
+            self.autofire=False
     
     def update_screen(self):
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
-        for bullet in self.bullets.sprites():
-                bullet.draw_bullet()
-        pygame.display.flip()
+        self._update_bullets()
+        
+
+        pygame.display.flip()   #刷新画面
 
     def _fire_bullet(self):
         '发射子弹'
+        #if len(self.bullets)<=self.settings.bullet_allowd:
         new_bullet=Bullet(self)      #新建子弹
         self.bullets.add(new_bullet) #编组增加元素
+    
+    def _update_bullets(self):
+        self.bullets.update()   #对每个精灵呼叫更新函数
+        self.count+=1
+        if self.autofire and self.count % self.settings.bullet_frequence==0:
+            self._fire_bullet() #如果一直按着空格
+            
+        for bullet in self.bullets.copy():
+            if bullet.rect.y<0:
+                self.bullets.remove(bullet)
+            #print(len(self.bullets))
+        for bullet in self.bullets.sprites():
+                bullet.draw_bullet()
 
     def run_game(self):
         self.screen.fill(self.settings.bg_color)#设置背景颜色
+        
         while 1:#每次检查
             #print(pygame.event.get())
              
@@ -73,7 +95,10 @@ class AlienInvasion:
             #self.ship.blitme()
             self._check_events()  
             self.ship.ship_move()
-            self.bullets.update()
+
+            
+ 
+            
 
             
 
