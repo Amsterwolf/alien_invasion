@@ -2,6 +2,8 @@ import sys,pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
+import random
 class AlienInvasion:
     def __init__(self,isfullscreen=False):
         pygame.init()
@@ -18,6 +20,9 @@ class AlienInvasion:
         self.ship=Ship(self)
         self.bullets=pygame.sprite.Group()
         self.autofire=False
+        self.aliens=pygame.sprite.Group()
+       
+
         self.count=0
         
 
@@ -61,6 +66,9 @@ class AlienInvasion:
     def update_screen(self):
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
+        #self.alien.blitme()
+
+        self.aliens.draw(self.screen) 
         self._update_bullets()
         
 
@@ -85,9 +93,28 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
                 bullet.draw_bullet()
 
+    def _creat_fleet(self):
+        new_ufo=Alien(self)
+        new_ufo_width=new_ufo.rect.width
+        new_ufo_height=new_ufo.rect.height
+        available_space_x=self.settings.width-new_ufo_width*2
+        available_space_y=self.settings.height-new_ufo_height*2-self.ship.height*3
+        numbers_ufo_x=available_space_x//(2*new_ufo_width)
+        numbers_ufo_y=int(available_space_y/(2*new_ufo_height))
+        for j in range(numbers_ufo_y):
+            for i in range(numbers_ufo_x):    
+                ufo=Alien(self) #创建一排ufo 
+                ufo.rect.x=(1+i*2+random.random())*new_ufo_width
+                ufo.x=ufo.rect.x
+                ufo.rect.y=(2*j+random.uniform(0,1))*new_ufo_height
+                self.aliens.add(ufo)#end
+
+        
+        
+
     def run_game(self):
         self.screen.fill(self.settings.bg_color)#设置背景颜色
-        
+        self._creat_fleet()
         while 1:#每次检查
             #print(pygame.event.get())
              
@@ -95,6 +122,7 @@ class AlienInvasion:
             #self.ship.blitme()
             self._check_events()  
             self.ship.ship_move()
+
 
             
  
