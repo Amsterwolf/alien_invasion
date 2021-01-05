@@ -1,3 +1,6 @@
 {
-    "python.linting.pylintArgs": ["--generate-members"]//for turtle
+    "python.linting.pylintArgs": [
+        "--generate-members"
+    ],
+    "git.ignoreLimitWarning": true //for turtle
 }

@@ -24,6 +24,12 @@ class Ship:
         self.ship_move_up=False
         self.ship_move_down=False
 
+    def back_original_pos(self):
+        self.rect.midbottom=self.screen_rect.midbottom
+        
+        self.x=self.rect.x
+        self.y=self.rect.y
+
     def blitme(self):
         self.screen.blit(self.image,self.rect)  #绘制飞机
 
