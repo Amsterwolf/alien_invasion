@@ -7,6 +7,7 @@ import random
 from time import sleep
 from game_status import GameStatus
 from button import Button
+from scoreboard import ScoreBoard
 class AlienInvasion:
     def __init__(self,isfullscreen=False):
         pygame.init()
@@ -25,6 +26,8 @@ class AlienInvasion:
 
         self.screen_rect=self.screen.get_rect()
         self.button=Button(self,"Play")
+        self.scoreboard=ScoreBoard(self)
+
 
         pygame.display.set_caption("外星人入侵 v1.0")
 
@@ -88,6 +91,7 @@ class AlienInvasion:
 
     def update_screen(self):
         self.screen.fill(self.settings.bg_color)
+        self.scoreboard.show_score()
         self.ship.blitme()
         #self.alien.blitme()
 
@@ -138,6 +142,7 @@ class AlienInvasion:
         if len(self.aliens)==0:
             sleep(0.1)
             self.bullets.empty()
+            self.settings.increase_dynamic_settings()
             self._creat_fleet()
     
     def _check_aliens_ship_collision(self):
@@ -155,12 +160,14 @@ class AlienInvasion:
         if self.button.rect.collidepoint(mouse_pos) and self.status.game_active==False:
             
             self.status.reset_status()
+            self.settings.init_dynamic_settings()
             self.status.game_active=True
             pygame.mouse.set_visible(False)
     
     def _check_by_K(self):
         if self.status.game_active==False:
             self.status.reset_status()
+            self.settings.init_dynamic_settings()
             self.status.game_active=True
             pygame.mouse.set_visible(False)
 
@@ -188,7 +195,7 @@ class AlienInvasion:
         available_space_x=self.settings.width-new_ufo_width*2
         available_space_y=self.settings.height-new_ufo_height*2-self.ship.height*3
         numbers_ufo_x=available_space_x//(2*new_ufo_width)
-        numbers_ufo_y=int(available_space_y/(2*new_ufo_height))
+        numbers_ufo_y=int((available_space_y-self.ship.rect.height)/(2*new_ufo_height))
         for j in range(numbers_ufo_y):
             for i in range(numbers_ufo_x):    
                 ufo=Alien(self) #创建一排ufo 

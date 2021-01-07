@@ -8,5 +8,5 @@ class GameStatus:
     def reset_status(self):#初始化信息
 
         self.ship_now_lifes=self.settings.ship_whole_lifes
-
+        self.score=0
         
