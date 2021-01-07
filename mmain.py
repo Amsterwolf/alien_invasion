@@ -138,12 +138,17 @@ class AlienInvasion:
                 bullet.draw_bullet()
            
     def _check_bullets_aliens_collision(self):
+        last_num=len(self.aliens)
         collision=pygame.sprite.groupcollide(self.bullets,self.aliens,True,True)
+        
+        self.status.score+=self.settings.alien_point*(last_num-len(self.aliens))
         if len(self.aliens)==0:
             sleep(0.1)
             self.bullets.empty()
             self.settings.increase_dynamic_settings()
             self._creat_fleet()
+           
+
     
     def _check_aliens_ship_collision(self):
         if pygame.sprite.spritecollideany(self.ship,self.aliens):
@@ -179,6 +184,8 @@ class AlienInvasion:
         if not self.status.ship_now_lifes:
             self.status.game_active=False
             print("Game over!!!")
+            
+
             pygame.mouse.set_visible(True)
            
         
@@ -186,6 +193,7 @@ class AlienInvasion:
         self.aliens.empty()
         self.bullets.empty()
         self._creat_fleet()
+        
         sleep(0.5)
 
     def _creat_fleet(self):

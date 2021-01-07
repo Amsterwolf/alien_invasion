@@ -8,7 +8,7 @@ class Settings:
         self.ship_whole_lifes=3
 
         self.bullet_speed=2.8
-        self.bullet_width=3
+        self.bullet_width=1200
         self.bullet_height=10
         self.bullet_color=(0,0,0)
         self.bullet_frequence=8
@@ -17,7 +17,7 @@ class Settings:
         self.ailen_speed_x=0.8
         self.ailen_speed_y=50.0
         self.ailen_move_direction=1
-
+        self.alien_point=1.0
         self.speedup_scale=1.1
         #self.init_dynamic_settings()
     
@@ -28,11 +28,16 @@ class Settings:
         self.bullet_speed=2.8
         self.bullet_frequence=8
 
-        self.ailen_speed_x=1.2
+        self.ailen_speed_x=0.8
         self.ailen_speed_y=50
+        self.alien_point=1.0
         self.hard_level=1.0
 
     def increase_dynamic_settings(self):
         self.ailen_speed_x*=self.speedup_scale
+        self.ship_speed*=self.speedup_scale
+        self.alien_point*=self.speedup_scale
+        #print(self.alien_point)
+
         
 
