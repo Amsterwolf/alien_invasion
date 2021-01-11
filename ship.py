@@ -1,7 +1,8 @@
 import pygame
 
-class Ship:
+class Ship():
     def __init__(self,ai):
+        super().__init__()
         self.screen=ai.screen
         self.screen_rect=self.screen.get_rect()#屏幕外接矩形
         self.settings=ai.settings
