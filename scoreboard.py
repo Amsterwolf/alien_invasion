@@ -68,6 +68,16 @@ class ScoreBoard:
         self.score_rect4.midtop=self.screen_rect.midtop
         self.score_rect4.y+=0
         #self.score_rect4.x-=0
+    
+    def prepare_tip(self):
+        str_tip="space:shoot    direction key:move    q:exit    p:start"
+        self.image_tip=self.font.render(str_tip,True,self.text_color,
+            self.settings.bg_color)
+
+        self.score_rect5=self.image_tip.get_rect()
+        self.score_rect5.topleft=self.screen_rect.topleft
+        self.score_rect5.y+=30
+        self.score_rect5.x+=30
 
     def show_score(self):
         self.prepare_score()
@@ -80,3 +90,6 @@ class ScoreBoard:
             self.prepare_boss_life()
             self.screen.blit(self.image_life,self.score_rect4)
 
+    def show_tip(self):
+        self.prepare_tip()
+        self.screen.blit(self.image_tip,self.score_rect5)

@@ -95,6 +95,7 @@ class AlienInvasion:
         if not self.status.game_active:
             self.screen.fill(self.settings.bg_color)
             self.button.draw_button()
+            self.scoreboard.show_tip()
             pygame.display.flip()   #刷新画面
 
     def update_screen(self):
@@ -266,7 +267,7 @@ class AlienInvasion:
         sleep(0.5)
 
     def _creat_fleet(self):
-        if self.status.level%10==0 or self.status.level==1:
+        if self.status.level%10==0:
             #print(self.status.level)
             self.alien_boss.reset()
             boss=self.alien_boss

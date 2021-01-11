@@ -8,7 +8,7 @@ class Settings:
         self.ship_whole_lifes=3
 
         self.bullet_speed=2.8
-        self.bullet_width=3*1200
+        self.bullet_width=3#*1200
         self.bullet_height=10
         self.bullet_color=(0,0,0)
         self.bullet_frequence=8
