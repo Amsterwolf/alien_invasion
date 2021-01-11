@@ -267,7 +267,7 @@ class AlienInvasion:
         sleep(0.5)
 
     def _creat_fleet(self):
-        if self.status.level%10==0:
+        if self.status.level%10==0 :
             #print(self.status.level)
             self.alien_boss.reset()
             boss=self.alien_boss

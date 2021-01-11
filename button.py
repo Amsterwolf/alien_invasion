@@ -9,7 +9,7 @@ class Button:
         self.height=120
         self.button_color=(200,150,200)
         self.text_color="white"
-        self.font=pygame.font.SysFont(None,48)
+        self.font=pygame.font.SysFont('arial',32)
 
         self.rect=pygame.Rect(0,0,self.width,self.height)
         self.rect.center=self.screen_rect.center

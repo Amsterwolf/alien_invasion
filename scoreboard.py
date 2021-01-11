@@ -10,7 +10,7 @@ class ScoreBoard:
         self.status=ai.status
         
         self.text_color="black"
-        self.font=pygame.font.SysFont(None,48)
+        self.font=pygame.font.SysFont("arial",32)
 
         #self.prepare_score()
         self.prepare_ships()
@@ -55,12 +55,12 @@ class ScoreBoard:
     def prepare_boss_life(self):
         left_life=self.ai.alien_boss.HP
         total_life=self.ai.alien_boss.totHP
-        str_left_life="["
+        str_left_life="|"
         for i in range(int(left_life*10/total_life)):
-            str_left_life+="█"
+            str_left_life+="▉"
         for j in range(10-int(left_life*10/total_life)):
             str_left_life+=" "
-        str_left_life+="]"
+        str_left_life+="|"
         self.image_life=self.font.render(str_left_life,True,self.text_color,
             self.settings.bg_color)
 
