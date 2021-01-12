@@ -25,7 +25,7 @@ class Settings:
         self.bullet_boss_width_skill=250
         self.bullet_boss_height_skill=25
         self.bullet_boss_frequence_skill=30
-
+        self.bullet_boss_skill_num=1
         self.ailen_speed_x=0.8
         self.ailen_speed_y=50.0
         self.ailen_move_direction=1
@@ -39,10 +39,10 @@ class Settings:
         
 
     def init_dynamic_settings(self):
-        self.ship_speed=1.7
+        self.ship_speed=1.5
         self.ship_whole_lifes=3
 
-        self.bullet_speed=2.8
+        self.bullet_speed=2.5
         self.bullet_frequence=8
 
         self.ailen_speed_x=0.8
@@ -59,6 +59,7 @@ class Settings:
         self.ailen_speed_x*=self.speedup_scale
         self.ship_speed*=self.speedup_scale
         self.alien_point*=self.speedup_scale
+        
         #print(self.alien_point)
         
         

@@ -11,6 +11,9 @@ from game_status import GameStatus
 from button import Button
 
 from scoreboard import ScoreBoard
+from prop import Prop
+
+
 class AlienInvasion:
     def __init__(self,isfullscreen=False):
         pygame.init()
@@ -42,7 +45,9 @@ class AlienInvasion:
         self.alien_boss=AlienBoss(self)
         self.boss_bullets=pygame.sprite.Group()
 
-        self.boss_skill_time=1
+        self.boss_skill_num=self.settings.bullet_boss_skill_num
+
+        self.props=pygame.sprite.Group()
 
         self.count=0
         self.count2=0
@@ -108,10 +113,12 @@ class AlienInvasion:
         self._update_bullets()
         self._update_boss_bullets()
         self._update_ufo_move()
+        self._update_props()
         self._check_bullets_aliens_collision()
         self._check_aliens_ship_collision()
         self._check_aliens_arrive_bottom()
         self._check_bossbullet_ship_collision()
+        self._check_prop_ship_collision()
         pygame.display.flip()   #刷新画面
 
     def _fire_bullet(self):
@@ -122,11 +129,14 @@ class AlienInvasion:
 
     def _fire_boss_bullet(self):
         new_bullet=BulletBoss(self)      #新建子弹
+        
         #print(new_bullet.rect.x)
         if self.alien_boss.skill_flag:
             new_bullet.set_skill_size()
-            if len(self.boss_bullets)>=self.boss_skill_time:
+            self.boss_skill_num-=1
+            if self.boss_skill_num==0:
                 self.alien_boss.skill_flag=False
+                self.boss_skill_num=self.settings.bullet_boss_skill_num
         self.boss_bullets.add(new_bullet) 
 
     def _is_ufo_to_drop(self):
@@ -173,6 +183,13 @@ class AlienInvasion:
         for bullet in self.boss_bullets.sprites():
                 bullet.draw_bullet()
     
+    def _update_props(self):
+        for prop in self.props.copy():
+            if prop.rect.top>=self.screen_rect.bottom:
+                self.props.remove(prop)
+        self.props.update()
+        self.props.draw(self.screen)
+
     def _check_bullets_aliens_collision(self):
         #last_num=len(self.aliens)
         collision=pygame.sprite.groupcollide(self.bullets,self.aliens,True,False)
@@ -212,11 +229,25 @@ class AlienInvasion:
             print("Ship hit!!")
             self._ship_hit()
     
+    def _check_prop_ship_collision(self):
+        collision_prop=pygame.sprite.spritecollideany(self.ship,self.props)
+        if collision_prop:
+            if collision_prop.flag==1 and self.status.ship_now_lifes<3*self.settings.ship_whole_lifes:
+                self.status.ship_now_lifes+=1
+                self.scoreboard.prepare_ships()
+
+            elif collision_prop.flag==2 and self.ship.speed*2<=self.settings.ship_speed:
+                self.ship.speed+=0.1
+            else:
+                self.settings.bullet_speed+=0.1
+            self.props.remove(collision_prop)
+
     def _check_aliens_arrive_bottom(self):
         for alien in self.aliens.sprites():
             if alien.rect.top>=self.screen_rect.bottom:
                 self._ship_hit()
                 break
+    
     
 
     def _check_play_button(self,mouse_pos):
@@ -250,6 +281,7 @@ class AlienInvasion:
                 with open("game_data_save.txt","w") as f:
                     f.write(str(self.status.high_score))
             print("Game over!!!")
+            self.ship.speed=self.settings.ship_speed
             
 
             pygame.mouse.set_visible(True)
@@ -259,7 +291,7 @@ class AlienInvasion:
         
         self.bullets.empty()
         self.boss_bullets.empty()
-        if not self.isboss_flag:
+        if not self.isboss_flag or self.status.ship_now_lifes==0:
             self.aliens.empty()
             self._creat_fleet()
         self.scoreboard.prepare_ships()
@@ -305,7 +337,10 @@ class AlienInvasion:
                 self.aliens.add(ufo)#end
 
     
-        
+    def _creat_prop(self):
+        if self.status.game_active and random.randint(1,2500)==1:
+            
+            self.props.add(Prop(self))
 
     def run_game(self):
         self.screen.fill(self.settings.bg_color)#设置背景颜色
@@ -316,6 +351,7 @@ class AlienInvasion:
             
             if self.status.game_active:  
                 self.ship.ship_move()
+                self._creat_prop()
 
                 self.update_screen()
 
