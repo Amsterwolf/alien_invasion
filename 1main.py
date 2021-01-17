@@ -35,7 +35,7 @@ class AlienInvasion:
         self.scoreboard=ScoreBoard(self)
 
 
-        pygame.display.set_caption("外星人入侵 v2.0")
+        pygame.display.set_caption("外星人入侵 v3.0")
 
         self.ship=Ship(self)
         self.bullets=pygame.sprite.Group()

@@ -4,7 +4,7 @@ class AlienBoss(Alien):
     def __init__(self,ai):
         super().__init__(ai)
         self.status=ai.status
-        self.image=pygame.image.load("images/rocketman.bmp")
+        self.image=pygame.image.load("images/ufo_boss.bmp")
         self.rect=self.image.get_rect()
         self.rect.top=self.screen_rect.top
         self.rect.x=self.screen_rect.centerx
